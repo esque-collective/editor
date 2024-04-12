@@ -5,7 +5,7 @@ import { EditorHeaderActionPart } from "../parts/editor-header-action-part";
 
 export const EditorHeader: FC = () => {
   return (
-    <header className="container fixed flex justify-between py-4">
+    <header className="container fixed left-1/2 flex -translate-x-1/2 justify-between py-4">
       <HomeButton />
       <EditorHeaderNavPart />
       <EditorHeaderActionPart />
