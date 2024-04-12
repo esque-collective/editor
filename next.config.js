@@ -3,6 +3,7 @@
  * for Docker builds.
  */
 await import("./src/env.js");
+import { exec } from "child_process";
 
 /** @type {import("next").NextConfig} */
 const config = {};

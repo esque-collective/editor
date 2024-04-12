@@ -1,12 +1,12 @@
 import { type FC } from "react";
 import { SchemaNavigationButton } from "../buttons/schema-navigation-button";
-import { useSearchParams } from "next/navigation";
 
-export const SchemaNavigationTreePart: FC = () => {
-  const searchParams = useSearchParams();
+export const SchemaRootNavigationTreePart: FC = () => {
   return (
     <section className="flex flex-col gap-2">
-      <SchemaNavigationButton kind="root">All Schemas</SchemaNavigationButton>
+      <SchemaNavigationButton disabled kind="root">
+        All Schemas
+      </SchemaNavigationButton>
       <section className="flex flex-col gap-1">
         <SchemaNavigationButton slug="home">Home Page</SchemaNavigationButton>
         <SchemaNavigationButton slug="catalog">
@@ -18,11 +18,9 @@ export const SchemaNavigationTreePart: FC = () => {
         <SchemaNavigationButton kind="folder" slug="components">
           Components
         </SchemaNavigationButton>
-        {searchParams.get("sidebar") !== null && (
-          <SchemaNavigationButton identation={1} slug="some-component">
-            Some Component
-          </SchemaNavigationButton>
-        )}
+        <SchemaNavigationButton identation={1} slug="some-component">
+          Some Component
+        </SchemaNavigationButton>
       </section>
     </section>
   );
