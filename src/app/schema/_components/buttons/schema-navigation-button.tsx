@@ -15,12 +15,14 @@ import { useMemo, type FC, type HTMLAttributes } from "react";
 
 interface SchemaNavigationButtonProps
   extends HTMLAttributes<HTMLButtonElement> {
+  disabled?: boolean;
   kind?: "root" | "folder" | "entity";
   slug?: string;
   identation?: 0 | 1 | 2 | 3 | 4 | 5;
 }
 
 export const SchemaNavigationButton: FC<SchemaNavigationButtonProps> = ({
+  disabled,
   children,
   className,
   kind = "entity",
@@ -45,11 +47,11 @@ export const SchemaNavigationButton: FC<SchemaNavigationButtonProps> = ({
   const identationClassName = useMemo(() => {
     switch (identation) {
       case 1:
-        return `pl-4`;
+        return `pl-2.5`;
       case 2:
-        return `pl-8`;
+        return `pl-5`;
       case 3:
-        return `pl-12`;
+        return `pl-10`;
       case 4:
         return `pl-16`;
       case 5:
@@ -58,7 +60,7 @@ export const SchemaNavigationButton: FC<SchemaNavigationButtonProps> = ({
   }, [identation]);
 
   const active = useMemo(() => {
-    if (kind === "root" && pathname === routes.schema) {
+    if (kind === "root" && !disabled && pathname === routes.schema) {
       return true;
     }
     if (slug && entitySlug === slug) {
@@ -66,7 +68,7 @@ export const SchemaNavigationButton: FC<SchemaNavigationButtonProps> = ({
     }
 
     return false;
-  }, [pathname, kind, entitySlug, slug]);
+  }, [pathname, kind, entitySlug, slug, disabled]);
 
   const href = useMemo(() => {
     if (kind === "root" || !slug) {
@@ -98,19 +100,17 @@ export const SchemaNavigationButton: FC<SchemaNavigationButtonProps> = ({
     }
   }, [kind]);
 
-  console.log(kind, active);
-
   return (
     <section
-      className={cn("group flex gap-2", className, identationClassName)}
+      className={cn("group flex gap-2 overflow-hidden", className, identationClassName)}
       {...rest}
     >
       <Button
         variant={active ? "secondary" : "secondary-ghost"}
         size="sm"
+        disabled={disabled}
         className={cn(
-          "max-w-[calc(100%-8.875rem)] flex-grow justify-start gap-2 overflow-hidden pl-4 pr-4",
-          kind === "entity" && "max-w-[calc(100%-2.625rem)]",
+          "min-w-9 max-w-[calc(100%-2.625rem)] flex-grow justify-start gap-2 overflow-hidden pl-2.5 pr-2.5",
           kind !== "entity" && active && "max-w-full",
         )}
         asChild
@@ -122,9 +122,12 @@ export const SchemaNavigationButton: FC<SchemaNavigationButtonProps> = ({
       </Button>
       <section
         className={cn(
-          "hidden gap-1 group-hover:flex",
-          kind === "root" && "flex",
-          active && (kind !== "entity" ? "hidden group-hover:hidden" : "flex"),
+          "hidden w-0 gap-1 group-hover:flex group-hover:w-max",
+          kind === "root" && "flex w-max",
+          active &&
+            (kind !== "entity"
+              ? "hidden w-0 group-hover:hidden"
+              : "flex w-max"),
         )}
       >
         {action}
